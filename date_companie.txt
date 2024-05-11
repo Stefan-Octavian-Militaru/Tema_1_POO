@@ -6,149 +6,179 @@ Management
 Logistica
 Relatii_Clienti
 Resurse_Umane
+2
+Dezvoltare_Aplicatie
+Atragere_Fonduri
 
 144
-Militaru Stefan 1 9 5 2004 4250
-Alexandrescu Alexandru 4 8 7 2002 8010
-Popescu Ion 3 4 5 2004 4600
-Popescu Andrei 3 15 2 1990 4150
-Ionescu Elena 6 29 4 1987 2800
-Radu Maria 3 22 9 1985 4000
-Stanescu Ion 2 8 6 1995 4000
-Dumitrescu Ana 5 11 11 1982 5150
-Stoica Alexandru 7 1 1 1999 4550
-Vladescu Mihaela 3 20 7 1993 4615
-Mihai Andreea 4 18 10 1991 8100
-Popa Catalin 7 5 3 1980 4400
-Vasilescu Cristina 1 30 12 1988 3650
-Popovici Stefan 5 14 5 1983 4950
-Grigorescu Diana 6 27 8 1997 2950
-Gheorghe Ioana 2 9 2 1986 3100
-Manea Adrian 1 23 9 1992 4250
-Dragomir Laura 6 2 4 1981 3450
-Marinescu Florin 3 19 6 1996 4650
-Tudor Alexandra 3 16 3 1984 4000
-Enescu Marius 2 28 10 1989 3500
-Nicolae Alina 5 7 7 1994 4950
-Ciobanu Bogdan 1 10 1 1980 3650
-Barbu Roxana 7 25 11 1998 4450
-Stan Alin 2 6 9 1982 3250
-Neagu Daniela 3 8 12 1990 4650
-Radulescu George 4 17 2 1987 8100
-Chiriac Oana 6 12 8 1985 2885
-Diaconu Sorin 5 21 5 1983 5000
-Nistor Ana-Maria 1 4 10 1991 3700
-Luca Adrian 7 30 7 1988 4400
-Dobre Cristina 4 15 3 1999 8100
-Iacob Marius 2 22 4 1986 3500
-Moldovan Raluca 3 1 9 1981 4600
-Constantinescu Gabriel 5 3 11 1992 5125
-Oprea Elena 6 18 1 1984 3450
-Voicu Florina 1 9 6 1980 3600
-Barbu Vlad 7 5 12 1994 4500
-Dumitru Alexandra 2 19 2 1997 3250
-Tudose Andrei 3 14 8 1983 4760
-Popovici Maria 3 27 10 1989 4650
-Petrescu Ionut 1 20 5 1981 4000
-Tanase Andreea 6 11 7 1996 2950
-Iancu Robert 5 28 3 1987 5125
-Voinea Laura 2 8 9 1990 3500
-Munteanu Ciprian 7 16 11 1985 4450
-Radulescu Andreea 3 23 1 1988 4000
-Marin Cristian 4 30 4 1992 8010
-Cretu Simona 6 5 10 1980 2885
-Zaharia Bogdan 2 12 2 1995 3750
-Dumitrache Irina 1 1 6 1983 4000
-Tudorache Mihai 7 19 9 1999 4550
-Istrate Anca 5 26 12 1984 5415
-Mihaila Adrian 3 9 5 1981 4600
-Ilie Nicoleta 3 21 8 1987 4615
-Coman Andrei 2 3 3 1993 3750
-Moise Elena 1 28 7 1980 3650
-Ursu Cosmin 6 6 11 1994 3630
-Marinca Ana-Maria 7 13 1 1989 4550
-Dumitriu Gabriel 3 10 4 1986 4615
-Draghici Alexandra 4 25 9 1991 7600
-Antonescu Florin 2 29 12 1982 4000
-Preda Raluca 5 17 6 1988 5000
-Balan Andrei 1 4 3 1983 4500
-Rosu Cristina 6 26 10 1996 2950
-Iordache Marius 7 15 2 1984 4400
-Dumitrascu Ioana 3 2 7 1981 4600
-Petcu Ion 3 31 5 1990 4760
-Sava Laura 1 20 8 1987 4000
-Marin Gabriel 5 7 1 1982 5000
-Iliescu Mihaela 6 24 3 1993 2885
-Paraschiv Adrian 7 11 9 1980 4450
-Costache Andreea 2 18 11 1995 3100
-Stancu Alexandru 3 23 12 1988 4500
-Mocanu Elena 4 14 4 1986 7150
-Cojocaru Marius 5 9 10 1992 5005
-Dumitrescu Ana-Maria 1 5 2 1981 4250
-Georgescu Ionut 6 26 7 1984 3300
-Rosca Elena 7 19 5 1990 4450
-Matei Sorin 3 31 8 1987 4000
-Badea Raluca 2 8 3 1991 3750
-Iacobescu George 4 1 9 1980 7600
-Stoian Andreea 5 15 11 1996 5500
-Ciocan Andrei 1 22 1 1983 3500
-Predescu Irina 7 17 6 1985 4550
-Zaharia Alexandru 2 27 12 1992 3500
-Toma Cristina 3 10 4 1980 4760
-Dumitru Adrian 6 5 8 1988 3450
-Olteanu Mihaela 4 13 10 1994 8010
-Popovici Ion 1 29 2 1986 3500
-Diaconescu Maria 5 16 7 1981 5005
-Stoica Florin 7 2 3 1993 4450
-Marin Roxana 3 11 12 1982 4615
-Cretu Mihai 6 26 4 1990 3450
-Barbu Elena 1 6 9 1987 3650
-Popescu Andrei 4 15 2 1990 8500
-Ionescu Ion 6 29 4 1987 2750
-Radu Mihai 3 22 9 1985 4000
-Stanescu Alexandru 2 8 6 1995 3750
-Dumitrescu Marius 5 11 11 1982 5500
-Stoica George 7 1 1 1999 4450
-Vladescu Stefan 3 20 7 1993 4600
-Mihai Cristian 4 18 10 1991 8500
-Popa Daniel 7 5 3 1980 4400
-Vasilescu Adrian 1 30 12 1988 3650
-Popovici Florin 5 14 5 1983 4950
-Grigorescu Catalin 6 27 8 1997 2750
-Gheorghe Robert 2 9 2 1986 3500
-Manea Gabriel 1 23 9 1992 4250
-Dragomir Vlad 6 2 4 1981 2950
-Marinescu Laurentiu 4 19 6 1996 7600
-Tudor Andrei 3 16 3 1984 4500
-Enescu Cosmin 2 28 10 1989 3000
-Nicolae Ciprian 5 7 7 1994 5125
-Ciobanu Marius 1 10 1 1980 3650
-Barbu Radu 7 25 11 1998 4450
-Stan Adrian 2 6 9 1982 3750
-Neagu Mihai 3 8 12 1990 4615
-Radulescu Dan 4 17 2 1987 8500
-Chiriac Gabriel 6 12 8 1985 3300
-Diaconu Andrei 5 21 5 1983 5150
-Nistor Paul 1 4 10 1991 3600
-Luca Bogdan 7 30 7 1988 4500
-Dobre Marian 4 15 3 1999 8100
-Iacob Alexandru 2 22 4 1986 3100
-Moldovan Adrian 3 1 9 1981 4000
-Constantinescu Ionut 5 3 11 1992 5000
-Oprea Florin 6 18 1 1984 3000
-Voicu Victor 1 9 6 1980 3500
-Barbu Mircea 7 5 12 1994 4400
-Dumitru Mihai 2 19 2 1997 3500
-Tudose Gabriel 4 14 8 1983 8500
-Popovici Marius 3 27 10 1989 4760
-Petrescu Alexandru 1 20 5 1981 4500
-Tanase Mihai 6 11 7 1996 2950
-Iancu Daniel 5 28 3 1987 5150
-Voinea Stefan 2 8 9 1990 3500
-Munteanu Cosmin 7 16 11 1985 4450
-Radulescu Marian 3 23 1 1988 4000
-Marin Andrei 3 30 4 1992 4760
-Cretu Alexandru 6 5 10 1980 2885
-Zaharia Vlad 2 12 2 1995 3750
-Dumitrache Gabriel 1 1 6 1983 3600
-Tudorache Stefan 7 19 9 1999 4450
+Militaru Stefan 1 4250 9 5 2004 22 3 2023
+Alexandrescu Alexandru 4 8010 8 7 2002 18 11 2018
+Popescu Ion 3 4600 4 5 2004 12 7 2017
+Popescu Andrei 3 4150 15 2 1990 24 2 2021
+Ionescu Elena 6 2800 29 4 1987 6 6 2019
+Radu Maria 3 4000 22 9 1985 9 9 2018
+Stanescu Ion 2 4000 8 6 1995 7 5 2020
+Dumitrescu Ana 5 5150 11 11 1982 15 1 2017
+Stoica Alexandru 7 4550 1 1 1999 14 4 2023
+Vladescu Mihaela 3 4615 20 7 1993 18 10 2019
+Mihai Andreea 4 8100 18 10 1991 2 4 2016
+Popa Catalin 7 4400 5 3 1980 13 3 2022
+Vasilescu Cristina 1 3650 30 12 1988 17 4 2023
+Popovici Stefan 5 4950 14 5 1983 10 2 2022
+Grigorescu Diana 6 2950 27 8 1997 5 9 2016
+Gheorghe Ioana 2 3100 9 2 1986 1 10 2021
+Manea Adrian 1 4250 23 9 1992 4 1 2020
+Dragomir Laura 6 3450 2 4 1981 19 12 2017
+Marinescu Florin 3 4650 19 6 1996 8 11 2019
+Tudor Alexandra 3 4000 16 3 1984 25 4 2016
+Enescu Marius 2 3500 28 10 1989 9 2 2021
+Nicolae Alina 5 4950 7 7 1994 12 10 2022
+Ciobanu Bogdan 1 3650 10 1 1980 3 9 2018
+Barbu Roxana 7 4450 25 11 1998 22 3 2021
+Stan Alin 2 3250 6 9 1982 16 7 2017
+Neagu Daniela 3 4650 8 12 1990 24 8 2020
+Radulescu George 4 8100 17 2 1987 15 12 2023
+Chiriac Oana 6 2885 12 8 1985 11 11 2022
+Diaconu Sorin 5 5000 21 5 1983 19 1 2019
+Nistor Ana-Maria 1 3700 4 10 1991 6 2 2018
+Luca Adrian 7 4400 30 7 1988 13 12 2020
+Dobre Cristina 4 8100 15 3 1999 10 3 2023
+Iacob Marius 2 3500 22 4 1986 21 9 2019
+Moldovan Raluca 3 4600 1 9 1981 18 8 2018
+Constantinescu Gabriel 5 5125 3 11 1992 5 5 2016
+Oprea Elena 6 3450 18 1 1984 7 10 2021
+Voicu Florina 1 3600 9 6 1980 16 4 2017
+Barbu Vlad 7 4500 5 12 1994 22 2 2022
+Dumitru Alexandra 2 3250 19 2 1997 25 1 2020
+Tudose Andrei 3 4760 14 8 1983 9 7 2023
+Popovici Maria 3 4650 27 10 1989 12 8 2017
+Petrescu Ionut 1 4000 20 5 1981 3 4 2022
+Tanase Andreea 6 2950 11 7 1996 20 3 2021
+Iancu Robert 5 5125 28 3 1987 14 12 2020
+Voinea Laura 2 3500 8 9 1990 11 6 2019
+Munteanu Ciprian 7 4450 16 11 1985 7 2 2018
+Radulescu Andreea 3 4000 23 1 1988 18 9 2016
+Marin Cristian 4 8010 30 4 1992 15 10 2023
+Cretu Simona 6 2885 5 10 1980 6 1 2019
+Zaharia Bogdan 2 3750 12 2 1995 2 5 2020
+Dumitrache Irina 1 4000 1 6 1983 21 11 2021
+Tudorache Mihai 7 4550 19 9 1999 4 8 2017
+Istrate Anca 5 5415 26 12 1984 13 10 2022
+Mihaila Adrian 3 4600 9 5 1981 19 7 2023
+Ilie Nicoleta 3 4615 21 8 1987 8 4 2020
+Coman Andrei 2 3750 3 3 1993 16 6 2019
+Moise Elena 1 3650 28 7 1980 5 12 2022
+Ursu Cosmin 6 3630 6 11 1994 11 1 2021
+Marinca Ana-Maria 7 4550 13 1 1989 22 8 2023
+Dumitriu Gabriel 3 4615 10 4 1986 9 9 2018
+Draghici Alexandra 4 7600 25 9 1991 24 7 2017
+Antonescu Florin 2 4000 29 12 1982 3 3 2022
+Preda Raluca 5 5000 17 6 1988 10 11 2020
+Balan Andrei 1 4500 4 3 1983 18 5 2019
+Rosu Cristina 6 2950 26 10 1996 14 1 2021
+Iordache Marius 7 4400 15 2 1984 25 4 2024
+Dumitrascu Ioana 3 4600 2 7 1981 17 6 2018
+Petcu Ion 3 4760 31 5 1990 20 2 2017
+Sava Laura 1 4000 20 8 1987 23 9 2022
+Marin Gabriel 5 5000 7 1 1982 8 8 2016
+Iliescu Mihaela 6 2885 24 3 1993 13 7 2020
+Paraschiv Adrian 7 4450 11 9 1980 19 12 2023
+Costache Andreea 2 3100 18 11 1995 6 10 2021
+Stancu Alexandru 3 4500 23 12 1988 12 4 2019
+Mocanu Elena 4 7150 14 4 1986 1 7 2017
+Cojocaru Marius 5 5005 9 10 1992 15 8 2022
+Dumitrescu Ana-Maria 1 4250 5 2 1981 9 3 2018
+Georgescu Ionut 6 3300 26 7 1984 24 1 2023
+Rosca Elena 7 4450 19 5 1990 17 12 2020
+Matei Sorin 3 4000 31 8 1987 2 6 2021
+Badea Raluca 2 3750 8 3 1991 13 2 2019
+Iacobescu George 4 7600 1 9 1980 21 10 2018
+Stoian Andreea 5 5500 15 11 1996 7 11 2017
+Ciocan Andrei 1 3500 22 1 1983 14 5 2020
+Predescu Irina 7 4550 17 6 1985 22 12 2022
+Zaharia Alexandru 2 3500 27 12 1992 8 7 2023
+Toma Cristina 3 4760 10 4 1980 5 8 2016
+Dumitru Adrian 6 3450 5 8 1988 19 9 2021
+Olteanu Mihaela 4 8010 13 10 1994 16 2 2020
+Popovici Ion 1 3500 29 2 1984 12 12 2019
+Diaconescu Maria 5 5005 16 7 1981 10 10 2017
+Stoica Florin 7 4450 2 3 1993 3 4 2018
+Marin Roxana 3 4615 11 12 1982 25 1 2024
+Cretu Mihai 6 3450 26 4 1990 15 3 2022
+Barbu Elena 1 3650 6 9 1987 11 11 2021
+Popescu Andrei 4 8500 15 2 1990 20 6 2017
+Ionescu Ion 6 2750 29 4 1987 22 7 2023
+Radu Mihai 3 4000 22 9 1985 24 10 2020
+Stanescu Alexandru 2 3750 8 6 1995 13 3 2019
+Dumitrescu Marius 5 5500 11 11 1982 9 1 2023
+Stoica George 7 4450 1 1 1999 17 12 2018
+Vladescu Stefan 3 4600 20 7 1993 21 2 2020
+Mihai Cristian 4 8500 18 10 1991 14 8 2016
+Popa Daniel 7 4400 5 3 1980 5 5 2019
+Vasilescu Adrian 1 3650 30 12 1988 23 8 2021
+Popovici Florin 5 4950 14 5 1983 16 12 2017
+Grigorescu Catalin 6 2750 27 8 1997 6 4 2020
+Gheorghe Robert 2 3500 9 2 1986 25 3 2022
+Manea Gabriel 1 4250 23 9 1992 7 2 2023
+Dragomir Vlad 6 2950 2 4 1981 8 9 2018
+Marinescu Laurentiu 4 7600 19 6 1996 18 1 2019
+Tudor Andrei 3 4500 16 3 1984 10 11 2020
+Enescu Cosmin 2 3000 28 10 1989 21 5 2017
+Nicolae Ciprian 5 5125 7 7 1994 19 4 2023
+Ciobanu Marius 1 3650 10 1 1980 12 12 2022
+Barbu Radu 7 4450 25 11 1998 14 7 2016
+Stan Adrian 2 3750 6 9 1982 1 1 2021
+Neagu Mihai 3 4615 8 12 1990 9 6 2018
+Radulescu Dan 4 8500 17 2 1987 22 10 2021
+Chiriac Gabriel 6 3300 12 8 1985 17 5 2020
+Diaconu Andrei 5 5150 21 5 1983 23 7 2019
+Nistor Paul 1 3600 4 10 1991 20 2 2022
+Luca Bogdan 7 4500 30 7 1988 15 9 2023
+Dobre Marian 4 8100 15 3 1999 3 8 2017
+Iacob Alexandru 2 3100 22 4 1986 2 3 2021
+Moldovan Adrian 3 4000 1 9 1981 13 1 2022
+Constantinescu Ionut 5 5000 3 11 1992 4 4 2023
+Oprea Florin 6 3000 18 1 1984 25 1 2020
+Voicu Victor 1 3500 9 6 1980 16 10 2022
+Barbu Mircea 7 4400 5 12 1994 21 11 2019
+Dumitru Mihai 2 3500 19 2 1997 7 7 2021
+Tudose Gabriel 4 8500 14 8 1983 6 3 2023
+Popovici Marius 3 4760 27 10 1989 12 9 2016
+Petrescu Alexandru 1 4500 20 5 1981 22 4 2019
+Tanase Mihai 6 2950 11 7 1996 14 1 2021
+Iancu Daniel 5 5150 28 3 1987 9 12 2022
+Voinea Stefan 2 3500 8 9 1990 18 2 2018
+Munteanu Cosmin 7 4450 16 11 1985 3 10 2021
+Radulescu Marian 3 4000 23 1 1988 11 5 2019
+Marin Andrei 3 4760 30 4 1992 5 8 2017
+Cretu Alexandru 6 2885 5 10 1980 13 4 2020
+Zaharia Vlad 2 3750 12 2 1995 23 6 2022
+Dumitrache Gabriel 1 3600 1 6 1983 17 7 2023
+Tudorache Stefan 7 4450 19 9 1999 12 8 2020
+26
+Smith John 8 13 6 1987 1990 36
+Dupont Pierre 9 7 9 1979 850 18
+Schmidt Hans 8 15 5 1992 950 12
+Kowalski Jan 8 22 3 1984 960 24
+Johnson Alice 8 11 11 1974 1050 48
+Moreau Marie 9 26 7 1998 1890 30
+Weber Anna 8 5 10 1975 1170 18
+Nowak Anna 8 19 2 1991 1830 6
+Davis Emily 8 29 1 1972 1210 42
+Bernard Elise 9 3 12 1989 1400 28
+Bauer Felix 8 28 8 1987 1630 12
+Wojcik Marek 8 17 4 1983 1720 30
+Lewis James 8 24 10 1996 1470 24
+Petit Leo 9 21 5 1976 1930 36
+Fuchs Lukas 8 9 9 1974 1160 18
+Zielinski Zofia 8 14 3 1995 1870 42
+Walker Charles 8 6 8 1988 1580 30
+Roux Nicolas 9 20 7 1980 1510 24
+Koch Tim 8 12 2 1973 1020 18
+Mazur Jakub 8 25 11 1998 1360 6
+Edwards Emma 8 16 1 1978 1840 12
+Leclerc Camille 9 8 4 1994 950 30
+Wolf Sofia 8 2 6 1977 970 36
+Jankowski Ewa 8 27 5 1999 1240 48
+Robinson Lily 8 18 3 1992 1880 18
+Masson Pauline 9 30 10 1985 1600 12
