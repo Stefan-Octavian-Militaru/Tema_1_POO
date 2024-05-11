@@ -16,7 +16,7 @@ class Data_Invalida : public exception
 public:
     Data_Invalida();
     Data_Invalida(string m) : motiv(m) {}
-    const char* what() const noexcept override
+    const char* what() const throw()
     {
         return motiv.c_str();
     }
@@ -147,8 +147,9 @@ public:
         return "Angajat Permanent";
     }
 };
-class contractor : public angajat
+class contractor : public virtual angajat
 {
+protected:
     int comision;
     int durata_contract;
 public:
@@ -159,11 +160,52 @@ public:
     friend istream & operator >> (istream & in, contractor & a);
     string get_venit()
     {
-        return "contractor pe durata de " + to_string(durata_contract) + "luni. comison: " + to_string(comision) + " lei";
+        return "contractor pe durata de " + to_string(durata_contract) + " luni. comison: " + to_string(comision) + " lei";
     }
     string caracterizare()
     {
         return "Contractor";
+    }
+};
+class manager : public virtual angajat
+{
+protected:
+    int salariu;
+    int bonus;
+public:
+    manager() {}
+    manager(string surname, string name, int dep, data data_n, int sal, int bon) : angajat(surname, name, dep, data_n), salariu(sal), bonus(bon) {}
+    friend ostream & operator << (ostream & out,
+                                  const manager & a);
+    friend istream & operator >> (istream & in, manager & a);
+    int get_salariu()
+    {
+        return salariu;
+    }
+    string get_venit()
+    {
+        return to_string(salariu + bonus) + " lei";
+    }
+    string caracterizare()
+    {
+        return "Manager";
+    }
+};
+class coordonator_proiect : public contractor, public manager
+{
+public:
+    coordonator_proiect() {}
+    coordonator_proiect(string surname, string name, int dep, data data_n, int com, int durata, int bon) : angajat(surname, name, dep, data_n), contractor(surname, name, dep, data_n, com, durata), manager(surname, name, dep, data_n, 0, bon) {}
+    friend ostream & operator << (ostream & out,
+                                  const coordonator_proiect & a);
+    friend istream & operator >> (istream & in, coordonator_proiect & a);
+    string get_venit()
+    {
+        return "contractor pe durata de " + to_string(durata_contract) + " luni. comison + bonus: " + to_string(comision + bonus) + " lei";
+    }
+    string caracterizare()
+    {
+        return "Coordonator_Proiect";
     }
 };
 class departament
@@ -173,6 +215,7 @@ protected:
     int ID;
     static int contor_ID;
     vector < angajat* > angajati;
+    manager* manager_dep;
 public:
     departament(string name): nume(name)
     {
@@ -219,6 +262,14 @@ public:
         {
             return angajati[0]->caracterizare();
         }
+    }
+    void set_manager(manager* m)
+    {
+        manager_dep = m;
+    }
+    manager* get_manager()
+    {
+        return manager_dep;
     }
 };
 class proiect_contractor : public departament
@@ -308,9 +359,22 @@ ostream & operator << (ostream & out,
     return out;
 }
 ostream & operator << (ostream & out,
+                       const manager & a)
+{
+    out << a.nume << " " << a.prenume << " " << a.ID_departament << " " << a.data_nasterii << " " << a.salariu << " " << a.bonus << endl;
+    return out;
+}
+ostream & operator << (ostream & out,
+                       const coordonator_proiect & a)
+{
+    out << a.nume << " " << a.prenume << " " << a.ID_departament << " " << a.data_nasterii << " " << a.comision << " " << a.durata_contract << " " << a.bonus << endl;
+    return out;
+}
+ostream & operator << (ostream & out,
                        const departament & d)
 {
     out << d.nume << endl;
+    return out;
 }
 istream & operator >> (istream & in, data & a)
 {
@@ -333,6 +397,7 @@ istream & operator >> (istream & in, data & a)
         }
     }
     a = d;
+    return in;
 }
 istream & operator >> (istream & in, angajat_permanent & a)
 {
@@ -377,11 +442,41 @@ istream & operator >> (istream & in, contractor & a)
     a = contractor(nume, prenume, id_departament, dn, comision, durata);
     return in;
 }
+istream & operator >> (istream & in, manager & a)
+{
+    string nume, prenume;
+    int id_departament, salariu, bonus;
+    data dn;
+    in >> nume;
+    in >> prenume;
+    in >> id_departament;
+    in >> dn;
+    in >> salariu;
+    in >> bonus;
+    a = manager(nume, prenume, id_departament, dn, salariu, bonus);
+    return in;
+}
+istream & operator >> (istream & in, coordonator_proiect & a)
+{
+    string nume, prenume;
+    int id_departament, comision, durata, bonus;
+    data dn;
+    in >> nume;
+    in >> prenume;
+    in >> id_departament;
+    in >> dn;
+    in >> comision;
+    in >> durata;
+    in >> bonus;
+    a = coordonator_proiect(nume, prenume, id_departament, dn, comision, durata, bonus);
+    return in;
+}
 istream & operator >> (istream & in, departament & d)
 {
     string nume;
     in >> nume;
     d = departament(nume);
+    return in;
 }
 void angajat::afisare_nume()
 {
@@ -396,6 +491,7 @@ void angajat::afisare_angajat()
 void departament::afiseaza_angajatii()
 {
     cout << nume << ":\n";
+    cout << "MANAGER: " << manager_dep->getname() << endl;
     for (int i = 0; i < angajati.size(); i++)
     {
         angajati[i]->afisare_nume();
@@ -791,7 +887,7 @@ void scadere_departament(vector < angajat_permanent > & angajati,int nr_angajati
         }
     }
 }
-void rescrie_fisier(int nra, vector < angajat_permanent > pang, int nrc, vector < contractor> con, int nrd, vector < departament > dep, int nrp, vector <proiect_contractor> pro)
+void rescrie_fisier(int nra, vector < angajat_permanent > pang, int nrc, vector < contractor> con, int nrd, vector < departament > dep, int nrp, vector <proiect_contractor> pro, vector<manager> man, vector<coordonator_proiect> coo)
 {
     ofstream fout("output.txt");
     fout << nrd << endl;
@@ -813,6 +909,16 @@ void rescrie_fisier(int nra, vector < angajat_permanent > pang, int nrc, vector 
     for(int i = 0; i < nrc; i++)
     {
         fout << con[i];
+    }
+    fout << endl;
+    for(int i = 0; i < nrd; i++)
+    {
+        fout << man[i];
+    }
+    fout << endl;
+    for(int i = 0; i < nrp; i++)
+    {
+        fout << coo[i];
     }
 }
 void id_checker_angajati(vector<angajat*> ang)
@@ -852,6 +958,8 @@ int main()
     vector < departament > departamente;
     vector < proiect_contractor > proiecte;
     vector < departament* > divizii;
+    vector < manager > manageri;
+    vector < coordonator_proiect> coordonatori;
     int nr_angajati_p, nr_contractori, nr_departamente, nr_proiecte;
     angajat a = angajat();
     departament d = departament();
@@ -897,6 +1005,20 @@ int main()
         {
             proiecte[lista_angajati[i]->getdep() - nr_departamente - 1].adauga_angajat(lista_angajati[i]);
         }
+    }
+    manageri.resize(nr_departamente);
+    for(int i = 0; i < nr_departamente; i++)
+    {
+        fin >> manageri[i];
+        lista_angajati.push_back(&manageri[i]);
+        departamente[manageri[i].getdep() - 1].set_manager(&manageri[i]);
+    }
+    coordonatori.resize(nr_proiecte);
+    for(int i = 0; i < nr_proiecte; i++)
+    {
+        fin >> coordonatori[i];
+        lista_angajati.push_back(&coordonatori[i]);
+        proiecte[coordonatori[i].getdep() - nr_departamente - 1].set_manager(&coordonatori[i]);
     }
     cout << "Scrieti aici keywordul pentru comenzile pe care vreti sa le efectuati. Scrieti STOP daca vreti ca programul sa se opreasca sau COMMIT daca vreti ca schimbarile efectuate sa se aplice in fisier\n";
     while (true)
@@ -1072,7 +1194,7 @@ int main()
                                 {
                                     if (keyword == "COMMIT")
                                     {
-                                        rescrie_fisier(nr_angajati_p, l_ang_perm,nr_contractori, contractori, nr_departamente, departamente, nr_proiecte, proiecte);
+                                        rescrie_fisier(nr_angajati_p, l_ang_perm,nr_contractori, contractori, nr_departamente, departamente, nr_proiecte, proiecte, manageri, coordonatori);
                                     }
                                     else
                                     {
