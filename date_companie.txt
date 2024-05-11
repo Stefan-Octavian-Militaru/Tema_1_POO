@@ -182,3 +182,14 @@ Wolf Sofia 8 2 6 1977 970 36
 Jankowski Ewa 8 27 5 1999 1240 48
 Robinson Lily 8 18 3 1992 1880 18
 Masson Pauline 9 30 10 1985 1600 12
+
+Anghel Alexandru 1 30 10 1969 10000 800
+Balanescu Bianca 2 25 6 1960 12500 1000
+Caldareanu Camil 3 5 4 1970 9000 900
+Dumitriu Darius 4 11 1 1965 11000 800
+Epureanu Emil 5 29 2 1964 12200 900
+Faurar Felicia 6 2 10 1972 13000 850
+Gorjeanu George 7 13 6 1981 8700 600
+
+Hoarau Herve 8 12 8 1970 1000 48 250
+Irimescu Irinel 9 1 1 1960 950 72 400
