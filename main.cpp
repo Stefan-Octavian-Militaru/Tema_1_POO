@@ -9,7 +9,21 @@
 #include <cstring>
 
 #include <exception>
+
+#include <set>
+
+#include <algorithm>
+
+#include <queue>
+
+#include <utility>
+
+#include <memory>
+
+#include <stack>
 using namespace std;
+class caretaker_memento;
+class memento_angajat;
 class Data_Invalida : public exception
 {
     string motiv;
@@ -49,8 +63,30 @@ public:
     friend istream & operator >> (istream & in, data & a);
     friend int comparare(data data_1, data data_2);
     friend void verificare_data(data* date);
-
+    bool operator< (const data & d) const{
+        if(comparare(*this, d) == 1)
+            return 1;
+        else
+            return 0;
+    }
+    bool operator> (const data & d) const{
+        if(comparare(*this, d) == -1)
+            return 1;
+        else
+            return 0;
+    }
 };
+class task{
+    data deadline;
+    string eticheta;
+public:
+    friend class iterator_task;
+    task();
+    task(data deadline, string eticheta) : deadline(deadline), eticheta(eticheta){}
+    data get_deadline(){return deadline;}
+    string get_eticheta(){return eticheta;}
+};
+typedef pair<data, string> taskddl;
 class angajat
 {
 protected:
@@ -110,7 +146,6 @@ public:
         contor_ID = start;
     }
     friend void ordonare_alfabetica(vector < angajat* > angajati);
-    friend void id_checker_angajati(vector<angajat*> ang);
     static void realocare_ID_uri(vector<angajat*> ang, int nr)
     {
         for(int i = 0; i < ang.size(); i++)
@@ -124,7 +159,17 @@ class angajat_permanent : public angajat
 {
     int salariu;
     data data_angajarii;
+    caretaker_memento* snapshoturi;
 public:
+        class memento_angajat{
+private:
+        const int salariu;
+        const int dep_id;
+        const int ID;
+    public:
+        friend class angajat_permanent;
+        memento_angajat(int sal, int dep_ID, int ID) : salariu(sal), dep_id(dep_ID), ID(ID){}
+    };
     angajat_permanent(string surname, string name, int dep, data data_n, int sal, data data_a): angajat(surname, name, dep, data_n), salariu(sal), data_angajarii(data_a) {}
     angajat_permanent() {}
     friend ostream & operator << (ostream & out,
@@ -146,12 +191,21 @@ public:
     {
         return "Angajat Permanent";
     }
+    memento_angajat* creeaza_snapshot(){return new memento_angajat(salariu,ID_departament, ID);}
+    void restaureaza(memento_angajat* mem){
+        salariu = mem->salariu;
+        ID = mem->ID;
+        ID_departament = mem->dep_id;
+    }
+    caretaker_memento* get_caretaker(){return snapshoturi;}
+    void add_caretaker(caretaker_memento* crt){snapshoturi = crt;}
 };
 class contractor : public virtual angajat
 {
 protected:
     int comision;
     int durata_contract;
+    shared_ptr<task> tsk;
 public:
     contractor() {}
     contractor(string surname, string name, int dep, data data_n, int com, int durata) : angajat(surname, name, dep, data_n), comision(com), durata_contract(durata) {}
@@ -166,6 +220,7 @@ public:
     {
         return "Contractor";
     }
+    void assign_task(shared_ptr<task> t){tsk = t;}
 };
 class manager : public virtual angajat
 {
@@ -215,6 +270,7 @@ protected:
     int ID;
     static int contor_ID;
     vector < angajat* > angajati;
+    priority_queue<shared_ptr<task>, vector<shared_ptr<task>>, greater<shared_ptr<task>>>lista_taskuri;
     manager* manager_dep;
 public:
     departament(string name): nume(name)
@@ -238,7 +294,9 @@ public:
     friend void crestere_departament(vector < angajat_permanent > & angajati, int nr_angajati, vector < departament > & dep, int nr_departamente);
     friend void scadere_departament(vector < angajat_permanent > & angajati, int nr_angajati, vector < departament > & dep, int nr_departamente);
     friend void update(angajat & a, departament & d);
-    string get_nume()
+    friend void afisare_taskuri(vector<departament> deps, int nrdep);
+    friend class iterator_task;
+    string getname()
     {
         return nume;
     }
@@ -271,6 +329,17 @@ public:
     {
         return manager_dep;
     }
+    void set_id(int valoare){ID = valoare;}
+    static void realocare_ID_uri(vector<departament*> dep, int nr)
+    {
+        for(int i = 0; i < dep.size(); i++)
+        {
+            dep[i]->ID = nr + i + 1;
+        }
+        departament::contor_ID = nr + dep.size();
+    }
+    void addtask(shared_ptr<task> tsk){lista_taskuri.push(tsk);}
+
 };
 class proiect_contractor : public departament
 {
@@ -280,6 +349,37 @@ public:
     proiect_contractor(string name, int zi,  int luna, int an, int fonduri) : departament(name), deadline(data(zi,luna,an)), fonduri_alocate(fonduri) {}
     proiect_contractor() {}
 };
+class iterator_task{
+    departament* dep;
+public:
+    iterator_task(departament* d) : dep(d) {}
+    void urmatorul(){dep->lista_taskuri.pop();}
+    shared_ptr<task> element_curent(){return dep->lista_taskuri.top();}
+    bool gol(){return dep->lista_taskuri.empty();}
+    string eticheta_curenta(){return element_curent()->eticheta;}
+    data deadline_curent(){return element_curent()->deadline;}
+};
+class caretaker_memento{
+    stack<angajat_permanent::memento_angajat*> snapshots;
+public:
+    angajat_permanent::memento_angajat* recent(){return snapshots.top();}
+    void sterge(){snapshots.pop();}
+    void add(angajat_permanent::memento_angajat* mem){snapshots.push(mem);}
+};
+class firma{
+    static firma* instanta;
+    string nume;
+    firma(string nume) : nume(nume) {}\
+    firma(const firma &f) {nume = f.nume;}
+public:
+    static firma* instantiere(string nume){
+        if (instanta == 0){
+            instanta = new firma(nume);
+        }
+        return instanta;
+    }
+};
+firma* firma::instanta = 0;
 int angajat  :: contor_ID = 0;
 int departament  :: contor_ID = 0;
 int comparare(data data_1, data data_2)
@@ -329,15 +429,14 @@ void verificare_data(data* date)
     {
         throw Data_Invalida("Anul introdus nu este bisect\n");
     }
-    data d1 = data(1,1,1905);
-    data d2 = data();
-    if(comparare(d1, *date) != 1)
+    unique_ptr<data> d1(new data(1,1,1905));
+    unique_ptr<data> d2(new data(1,1,2031));
+    if(comparare(*d1, *date) != 1)
     {
         throw Data_Invalida("Programul nu suporta date inainte de 1/1/1905\n");
     }
-    if(comparare(*date, d2) != 1)
-    {
-        throw Data_Invalida("Data introdusa este in viitor\n");
+    if(*d2 < *date){
+        throw Data_Invalida("Programul nu suporta date dupa 1/1/2031");
     }
 }
 ostream & operator << (ostream & out,
@@ -378,25 +477,24 @@ ostream & operator << (ostream & out,
 }
 istream & operator >> (istream & in, data & a)
 {
-    data d;
     while(true)
     {
         int zi, luna, an;
         in >> zi;
         in >> luna;
         in >> an;
-        d = data(zi, luna, an);
+        unique_ptr<data> d(new data(zi, luna, an));
         try
         {
-            verificare_data(&d);
+            verificare_data(d.get());
+            a = *d;
             break;
         }
         catch(Data_Invalida d)
         {
-            cout << d.what();
+            cout << d.what() << "\n";
         }
     }
-    a = d;
     return in;
 }
 istream & operator >> (istream & in, angajat_permanent & a)
@@ -478,6 +576,9 @@ istream & operator >> (istream & in, departament & d)
     d = departament(nume);
     return in;
 }
+iterator_task* creeaza_iter(departament* dep) {
+        return new iterator_task(dep);
+    }
 void angajat::afisare_nume()
 {
     cout << nume << " " << prenume;
@@ -527,12 +628,12 @@ void afisare_departamente(vector < departament > departamente, int nr_dep, vecto
     cout << "-----DEPARTAMENTE-----\n";
     for (int i = 0; i < nr_dep; i++)
     {
-        cout << departamente[i].get_nume() << endl;
+        cout << departamente[i].getname() << " " << departamente[i].get_ID() << endl;
     }
     cout << "-----PROIECTE-----\n";
     for(int i = 0; i < nr_p; i++)
     {
-        cout << proiecte[i].get_nume() << endl;
+        cout << proiecte[i].getname() << " " << proiecte[i].get_ID() << endl;
     }
 }
 void afisare_angajati_departamente(vector < angajat* > angajati, vector < departament* > divizii)
@@ -544,7 +645,7 @@ void afisare_angajati_departamente(vector < angajat* > angajati, vector < depart
         {
             if (divizii[j]->get_ID() == angajati[i]->getdep())
             {
-                cout << divizii[j]->get_nume() << endl;
+                cout << divizii[j]->getname() << endl;
                 break;
             }
         }
@@ -571,7 +672,7 @@ void afisare_departamente_salarii(vector < departament* > departamente)
     {
         for (int j = 0; j < departamente[i]->angajati.size(); j++)
         {
-            cout << departamente[i]->angajati[j]->getname() << " " << departamente[i]->get_nume() << " " << departamente[i]->angajati[j]->get_venit() << endl;
+            cout << departamente[i]->angajati[j]->getname() << " " << departamente[i]->getname() << " " << departamente[i]->angajati[j]->get_venit() << endl;
         }
         cout << endl;
     }
@@ -582,7 +683,7 @@ void afisare_angajati_data(vector < angajat* > angajati)
     {
         for (int j = i + 1; j < angajati.size(); j++)
         {
-            if (comparare(angajati[i]->get_data(), angajati[j]->get_data()) == -1)
+            if (angajati[i]->get_data() > angajati[j]->get_data())
             {
                 swap(angajati[i], angajati[j]);
             }
@@ -591,6 +692,15 @@ void afisare_angajati_data(vector < angajat* > angajati)
     for (int i = 0; i < angajati.size(); i++)
     {
         cout << angajati[i]->getname() << " " << angajati[i]->get_data() << endl;
+    }
+}
+void afisare_taskuri(vector<departament> deps, int nrdep){
+    for(int i = 0; i < nrdep; i++){
+        cout << deps[i].getname() << ":\n";
+        iterator_task* it = creeaza_iter(&deps[i]);
+        for(it->element_curent(); !it->gol();it->urmatorul()){
+            cout << it->eticheta_curenta() << " " << it->deadline_curent() << endl;
+        }
     }
 }
 void adauga_angajat(int & numarp,int & numarc, vector < angajat*> & angajati, vector <angajat_permanent> &ang_perm, vector <contractor> &con)
@@ -701,20 +811,17 @@ void unire(vector < angajat* > & angajati, vector < departament > & departamente
     cin >> dep1 >> dep2;
     for (int i = 0; i < nr_departamente; i++)
     {
-        if (departamente[i].get_nume() == dep1 || departamente[i].get_nume() == dep2)
+        if (departamente[i].getname() == dep1 || departamente[i].getname() == dep2)
         {
             for (int j = i + 1; j < nr_departamente; j++)
             {
-                if (departamente[j].get_nume() == dep1 || departamente[j].get_nume() == dep2)
+                if (departamente[j].getname() == dep1 || departamente[j].getname() == dep2)
                 {
                     int size_1 = departamente[i].angajati.size();
                     int size_2 = departamente[j].angajati.size();
                     departament* p2 = &departamente[j];
                     departamente[i].angajati.resize(size_1 + size_2);
-                    for (int k = size_1; k < size_1 + size_2; k++)
-                    {
-                        departamente[i].angajati[k] = departamente[j].angajati[k - size_1];
-                    }
+                    copy(departamente[j].angajati.begin(), departamente[j].angajati.end(), departamente[i].angajati.begin() + size_1);
                     for (int k = 0; k < angajati.size(); k++)
                     {
                         if (angajati[k]->getdep() == departamente[j].get_ID())
@@ -778,7 +885,7 @@ void crestere_departament(vector < angajat_permanent > & angajati,int nr_angajat
     int ID;
     for (int i = 0; i < nr_departamente; i++)
     {
-        if (nume == dep[i].get_nume())
+        if (nume == dep[i].getname())
         {
             ID = dep[i].ID;
         }
@@ -854,7 +961,7 @@ void scadere_departament(vector < angajat_permanent > & angajati,int nr_angajati
     int ID;
     for (int i = 0; i < nr_departamente; i++)
     {
-        if (nume == dep[i].get_nume())
+        if (nume == dep[i].getname())
         {
             ID = dep[i].ID;
         }
@@ -887,7 +994,7 @@ void scadere_departament(vector < angajat_permanent > & angajati,int nr_angajati
         }
     }
 }
-void rescrie_fisier(int nra, vector < angajat_permanent > pang, int nrc, vector < contractor> con, int nrd, vector < departament > dep, int nrp, vector <proiect_contractor> pro, vector<manager> man, vector<coordonator_proiect> coo)
+void rescrie_fisier(int nra, vector < angajat_permanent > &pang, int nrc, vector < contractor> &con, int nrd, vector < departament > &dep, int nrp, vector <proiect_contractor> &pro, vector<manager>& man, vector<coordonator_proiect> coo, int nr_taskuri)
 {
     ofstream fout("output.txt");
     fout << nrd << endl;
@@ -920,38 +1027,69 @@ void rescrie_fisier(int nra, vector < angajat_permanent > pang, int nrc, vector 
     {
         fout << coo[i];
     }
+    fout << endl << nr_taskuri << endl << endl;
+    for(int i = 0; i < nrd; i++){
+        iterator_task* it = creeaza_iter(&dep[i]);
+        for(it->element_curent();!it->gol();it->urmatorul()){
+            fout << it->eticheta_curenta() << " " << it->deadline_curent() << " " << dep[i].get_ID() << endl;
+        }
+    }
 }
-void id_checker_angajati(vector<angajat*> ang)
+template<class type>
+void id_checker(vector<type*> &lista)
 {
-    vector<int> ids;
-    for(int i = 0; i < ang.size(); i++)
+    set<int> ids;
+    for(int i = 0; i < lista.size(); i++)
     {
         try
         {
-            for(int j = 0; j < ids.size(); j++)
+            if(ids.find(lista[i]->get_ID()) != ids.end())
             {
-                if(ids[j] == ang[i]->ID)
-                {
-                    cout << "ID-urile nu mai sunt unice! Introduceti valoarea de la care va incepe realocarea acestora:\n";
-                    int val;
-                    cin >> val;
-                    throw ID_invalid(val);
-                }
+                cout << "ID-urile nu mai sunt unice! Introduceti valoarea de la care va incepe realocarea acestora:\n";
+                int val;
+                cin >> val;
+                throw ID_invalid(val);
             }
         }
         catch(ID_invalid i)
         {
             int val = i.get_val();
-            angajat::realocare_ID_uri(ang, val);
+            type::realocare_ID_uri(lista, val);
             cout << i.what();
             break;
         }
-        ids.push_back(ang[i]->ID);
+        ids.insert(lista[i]->get_ID());
     }
+}
+template <class type>
+void schimba_id(vector<type*> &lista){
+    int id;
+    type* target;
+    cout << "Introduceti ID-ul pe care doriti sa il schimbati:\n";
+    cin >> id;
+    int gasit = 0;
+    for(int i = 0; i < lista.size(); i++)
+    {
+        if(lista[i]->get_ID() == id)
+        {
+            gasit = 1;
+            cout << "Introduceti noua valoare a ID-ului pentru " << lista[i]->getname() << ":\n";
+            cin >> id;
+            lista[i]->set_id(id);
+            target = lista[i];
+            break;
+        }
+    }
+    if(gasit == 1)
+        cout << "ID-ul pentru " << target->getname() << " a fost schimbat\n";
+    else
+        cout << "ID-ul cautat nu a fost gasit!\n";
 }
 int main()
 {
+    firma* f1 = firma::instantiere("ferrari");
     ifstream fin("date_companie.txt");
+    ofstream fout("output.txt");
     vector < angajat* > lista_angajati;
     vector < angajat_permanent > l_ang_perm;
     vector < contractor > contractori;
@@ -960,7 +1098,7 @@ int main()
     vector < departament* > divizii;
     vector < manager > manageri;
     vector < coordonator_proiect> coordonatori;
-    int nr_angajati_p, nr_contractori, nr_departamente, nr_proiecte;
+    int nr_angajati_p, nr_contractori, nr_departamente, nr_proiecte, nr_taskuri;
     angajat a = angajat();
     departament d = departament();
     a.initializare_ID(1000);
@@ -985,6 +1123,8 @@ int main()
     for (int i = 0; i < nr_angajati_p; i++)
     {
         fin >> l_ang_perm[i];
+        caretaker_memento* crt = new caretaker_memento();
+        l_ang_perm[i].add_caretaker(crt);
         lista_angajati.push_back(&l_ang_perm[i]);
     }
     fin >> nr_contractori;
@@ -1020,6 +1160,14 @@ int main()
         lista_angajati.push_back(&coordonatori[i]);
         proiecte[coordonatori[i].getdep() - nr_departamente - 1].set_manager(&coordonatori[i]);
     }
+    fin >> nr_taskuri;
+    for(int i = 0; i < nr_taskuri; i++){
+        string eticheta;
+        int iddep;
+        data deadline;
+        fin >> eticheta >> deadline >> iddep;
+        departamente[iddep - 1].addtask(make_shared<task>(deadline, eticheta));
+    }
     cout << "Scrieti aici keywordul pentru comenzile pe care vreti sa le efectuati. Scrieti STOP daca vreti ca programul sa se opreasca sau COMMIT daca vreti ca schimbarile efectuate sa se aplice in fisier\n";
     while (true)
     {
@@ -1035,7 +1183,7 @@ int main()
                 while(true)
                 {
                     int invalid = 0;
-                    cout << "Scrie numarul corespunzator uneia dintre urmatoarele optiuni:\nDEPARTAMENTE 1 / ANGAJATI 2 / ANGAJATI + ID + DEPARTAMENT 3 / DEPARTAMENT + ANGAJATI 4 / ANGAJATI + VENIT 5 / ANGAJATI + DEPARTAMENT + VENIT 6 / ANGAJATI + DATA NASTERII 7\n";
+                    cout << "Scrie numarul corespunzator uneia dintre urmatoarele optiuni:\nDEPARTAMENTE 1 / ANGAJATI 2 / ANGAJATI + ID + DEPARTAMENT 3 / DEPARTAMENT + ANGAJATI 4 / ANGAJATI + VENIT 5 / ANGAJATI + DEPARTAMENT + VENIT 6 / ANGAJATI + DATA NASTERII 7 / DEPARTAMENTE + TASKURI 8\n";
                     int cod;
                     cin >> cod;
                     if (cod == 1)
@@ -1068,9 +1216,13 @@ int main()
                                             }
                                             else
                                             {
+                                                if(cod == 8){
+                                                    afisare_taskuri(departamente, nr_departamente);
+                                                }
+                                                else{
                                                 cout << "Optiune invalida introdusa, incercati din nou" << endl;
                                                 invalid = 1;
-
+                                                }
                                             }
                                         }
                                     }
@@ -1099,7 +1251,7 @@ int main()
                         cin >> nume_departament;
                         for (int i = 0; i < nr_departamente + nr_proiecte; i++)
                         {
-                            if (divizii[i]->get_nume() == nume_departament)
+                            if (divizii[i]->getname() == nume_departament)
                             {
                                 muta_angajat(lista_angajati[lista_angajati.size() - 1], *divizii[i]);
                                 break;
@@ -1112,6 +1264,8 @@ int main()
                         adauga_departament(nr_departamente, departamente, nr_proiecte, proiecte, divizii);
                         cout << "Departamentul a fost adaugat\n";
                     }
+                    id_checker(lista_angajati);
+                    id_checker(divizii);
                 }
                 else
                 {
@@ -1131,7 +1285,7 @@ int main()
                                 sterge_angajat(lista_angajati[i], divizii);
                                 for (int j = 0; j < nr_departamente + nr_proiecte; j++)
                                 {
-                                    if (divizii[j]->get_nume() == nume_d)
+                                    if (divizii[j]->getname() == nume_d)
                                     {
                                         muta_angajat(lista_angajati[i], *divizii[j]);
                                         break;
@@ -1194,41 +1348,65 @@ int main()
                                 {
                                     if (keyword == "COMMIT")
                                     {
-                                        rescrie_fisier(nr_angajati_p, l_ang_perm,nr_contractori, contractori, nr_departamente, departamente, nr_proiecte, proiecte, manageri, coordonatori);
+                                        id_checker(lista_angajati);
+                                        id_checker(divizii);
+                                        rescrie_fisier(nr_angajati_p, l_ang_perm,nr_contractori, contractori, nr_departamente, departamente, nr_proiecte, proiecte, manageri, coordonatori, nr_taskuri);
                                     }
                                     else
                                     {
                                         if(keyword == "CHANGEID")
                                         {
-                                            int id;
-                                            angajat* ang;
-                                            cout << "Introduceti ID-ul angajatului:\n";
-                                            cin >> id;
-                                            int gasit = 0;
-                                            for(int i = 0; i < lista_angajati.size(); i++)
-                                            {
-                                                if(lista_angajati[i]->get_ID() == id)
-                                                {
-                                                    gasit = 1;
-                                                    cout << "Introduceti noua valoare a ID-ului:\n";
-                                                    cin >> id;
-                                                    lista_angajati[i]->set_id(id);
-                                                    ang = lista_angajati[i];
-                                                    break;
-                                                }
-                                            }
-                                            if(gasit == 1)
-                                            {
-                                                cout << "ID-ul pentru " << ang->getname() << " a fost schimbat\n";
+                                            cout << "Doriti sa schimbati ID-ul pentru un angajat(1) sau pentru un departament(2)?";
+                                            int cod;
+                                            cin >> cod;
+                                            if(cod == 1){
+                                                schimba_id(lista_angajati);
                                             }
                                             else
                                             {
-                                                cout << "Angajatul nu a fost gasit!\n";
+                                                schimba_id(divizii);
                                             }
+                                            id_checker(lista_angajati);
+                                            id_checker(divizii);
                                         }
                                         else
                                         {
-                                            cout << "Keyword invalid introdus\n";
+                                            if(keyword == "SNAPSHOT"){
+                                                for(int i = 0; i < nr_angajati_p; i++){
+                                                    l_ang_perm[i].get_caretaker()->add(l_ang_perm[i].creeaza_snapshot());
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if(keyword == "UNDOALL"){
+                                                    for(int i = 0 ; i < nr_angajati_p; i++){
+                                                        l_ang_perm[i].restaureaza(l_ang_perm[i].get_caretaker()->recent());
+                                                        l_ang_perm[i].get_caretaker()->sterge();
+                                                    }
+                                                    cout << "SCHIMBARILE AU FOST ANULATE\n";
+                                                }
+                                                else
+                                                {
+                                                    if(keyword == "UNDO"){
+                                                        cout << "Introuceti ID-ul angajatului pe care vreti sa il restaurati\n";
+                                                        int id;
+                                                        cin >> id;
+                                                        for(int i = 0; i < nr_angajati_p; i++){
+                                                            if(l_ang_perm[i].get_ID() == id){
+                                                                l_ang_perm[i].restaureaza(l_ang_perm[i].get_caretaker()->recent());
+                                                                l_ang_perm[i].get_caretaker()->sterge();
+                                                                break;
+                                                            }
+                                                        }
+                                                        cout << "SCHIMBARILE AU FOST ANULATE\n";
+
+                                                    }
+                                                    else
+                                                    {
+                                                        cout << "KEYWORD INVALID INTRODUS\n";
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1238,7 +1416,7 @@ int main()
                 }
             }
         }
-        id_checker_angajati(lista_angajati);
+
     }
     return 0;
 }
