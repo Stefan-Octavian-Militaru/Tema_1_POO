@@ -130,12 +130,18 @@ public:
     {
         return nume + " " + prenume;
     }
-    virtual string get_venit() {}
+    virtual string get_venit()
+    {
+        return "0";
+    }
     int get_ID()
     {
         return ID;
     }
-    virtual string caracterizare() {}
+    virtual string caracterizare()
+    {
+        return "0";
+    }
     data get_data()
     {
         return data_nasterii;
@@ -412,6 +418,14 @@ public:
         snapshots.push(mem);
     }
 };
+template <class type>
+class cautare
+{
+    type target;
+public:
+    cautare(type t) : target(t) {}
+    void cauta();
+};
 class firma
 {
     static firma* instanta;
@@ -462,6 +476,8 @@ public:
     void snapshot();
     void undo();
     void undo_all();
+    friend class cautare<string>;
+    friend class cautare<int>;
 };
 firma* firma::instanta = 0;
 int angajat  :: contor_ID = 0;
@@ -665,6 +681,35 @@ iterator_task* creeaza_iter(departament* dep)
 {
     return new iterator_task(dep);
 }
+template <class type>
+void cautare<type>::cauta()
+{
+    firma* f = firma::instantiere("sample_txt");
+    string tinta = target + "";
+    for(int i = 0; i < f->lista_angajati.size(); i++)
+    {
+        if(f->lista_angajati[i]->get_ID() + "" == tinta)
+        {
+            cout << "A fost gasit angajatul " << f->lista_angajati[i]->getname() << " cu id-ul " << f->lista_angajati[i]->get_ID() << "\n";
+        }
+        if(f->lista_angajati[i]->getname() == tinta)
+        {
+            cout << "A fost gasit angajatul " << f->lista_angajati[i]->getname() << " cu id-ul " << f->lista_angajati[i]->get_ID() << "\n";
+        }
+    }
+    for(int i = 0; i < f->divizii.size(); i++)
+    {
+        if(f->divizii[i]->get_ID() + "" == tinta)
+        {
+            cout << "A fost gasit departamentul " << f->divizii[i]->getname() << " cu id-ul " << f->divizii[i]->get_ID() << "\n";
+        }
+        if(f->divizii[i]->getname() == tinta)
+        {
+            cout << "A fost gasit departamentul " << f->divizii[i]->getname() << " cu id-ul " << f->divizii[i]->get_ID() << "\n";
+        }
+    }
+
+}
 void angajat::afisare_nume()
 {
     cout << nume << " " << prenume;
@@ -803,8 +848,14 @@ void firma::citire_fisier()
         string eticheta;
         int iddep;
         data deadline;
-        fin >> eticheta >> deadline >> iddep;
-        departamente[iddep - 1].addtask(make_shared<task>(deadline, eticheta));
+        fin >> eticheta >> deadline;
+        shared_ptr<task> task_curent = make_shared<task>(deadline, eticheta);
+        fin >> iddep;
+        while(iddep != 0)
+        {
+            departamente[iddep - 1].addtask(task_curent);
+            fin >> iddep;
+        }
     }
 }
 void firma::ordonare_alfabetica()
@@ -848,7 +899,7 @@ void firma::afisare_angajati_departamente()
     for (int i = 0; i < lista_angajati.size(); i++)
     {
         cout << lista_angajati[i]->getname() << " " << lista_angajati[i]->get_ID() << " ";
-        for (int j = 0; j < divizii.size(); j++)
+        for (int j = 0; j < nr_departamente + nr_proiecte; j++)
         {
             if (divizii[j]->get_ID() == lista_angajati[i]->getdep())
             {
@@ -860,7 +911,7 @@ void firma::afisare_angajati_departamente()
 }
 void firma::afisare_departamente_angajati()
 {
-    for (int i = 0; i < divizii.size(); i++)
+    for (int i = 0; i < nr_departamente + nr_proiecte; i++)
     {
         divizii[i]->afiseaza_angajatii();
     }
@@ -875,7 +926,7 @@ void firma::afisare_salarii()
 }
 void firma::afisare_departamente_salarii()
 {
-    for (int i = 0; i < divizii.size(); i++)
+    for (int i = 0; i < nr_departamente + nr_proiecte; i++)
     {
         for (int j = 0; j < divizii[i]->angajati.size(); j++)
         {
@@ -910,7 +961,7 @@ void firma::afisare_taskuri()
         iterator_task* it = creeaza_iter(&departamente[i]);
         for(it->element_curent(); !it->gol(); it->urmatorul())
         {
-            cout << it->eticheta_curenta() << " " << it->deadline_curent() << endl;
+            cout << it->eticheta_curenta() << " " << it->deadline_curent() << " " << it->element_curent().use_count() - 1 << " departamente lucreaza la acest task" << endl;
         }
     }
 }
@@ -918,7 +969,7 @@ void firma::adauga_angajat()
 {
     cout << "Introduceti numele si prenumele angajatului separate printr-un singur spatiu\n";
     string nume, prenume, nume_departament;
-    int salariu, zia, lunaa, ana, comision, durata;
+    int salariu, comision, durata;
     data dn, da;
     char selector;
     cin >> nume >> prenume;
@@ -1034,7 +1085,7 @@ void firma::muta_angajat()
 }
 void firma::sterge_angajat(angajat *ang)
 {
-    for (int i = 0; i < divizii.size(); i++)
+    for (int i = 0; i < nr_departamente + nr_proiecte; i++)
     {
         if (divizii[i]->get_ID() == ang->getdep())
         {
@@ -1069,7 +1120,6 @@ void firma::unire()
                 {
                     int size_1 = departamente[i].angajati.size();
                     int size_2 = departamente[j].angajati.size();
-                    departament* p2 = &departamente[j];
                     departamente[i].angajati.resize(size_1 + size_2);
                     copy(departamente[j].angajati.begin(), departamente[j].angajati.end(), departamente[i].angajati.begin() + size_1);
                     for (int k = 0; k < lista_angajati.size(); k++)
@@ -1141,12 +1191,12 @@ void firma::crestere_departament()
     cout << "Introduceti numele departamentului\n";
     string nume;
     cin >> nume;
-    int ID;
+    int IDdep;
     for (int i = 0; i < nr_departamente; i++)
     {
         if (nume == departamente[i].getname())
         {
-            ID = departamente[i].ID;
+            IDdep = departamente[i].ID;
         }
     }
     cout << "Introduceti cu cat vreti sa mariti salariul(adaugati % daca doriti ca schimbarea sa fie procentuala sau * daca vreti sa fie o suma fixa)\n";
@@ -1158,7 +1208,7 @@ void firma::crestere_departament()
         float procent = float(numar) / 100 + 1;
         for (int i = 0; i < nr_angajati_p; i++)
         {
-            if (l_ang_perm[i].getdep() == ID)
+            if (l_ang_perm[i].getdep() == IDdep)
             {
                 cout << "salariu vechi: " << l_ang_perm[i].getsalariu() << " salariu nou: " << l_ang_perm[i].getsalariu() * procent << endl;
                 l_ang_perm[i].set_salariu(l_ang_perm[i].getsalariu() * procent);
@@ -1169,7 +1219,7 @@ void firma::crestere_departament()
     {
         for (int i = 0; i < nr_angajati_p; i++)
         {
-            if (l_ang_perm[i].getdep() == ID)
+            if (l_ang_perm[i].getdep() == IDdep)
             {
                 cout << "salariu vechi: " << l_ang_perm[i].getsalariu() << " salariu nou: " << l_ang_perm[i].getsalariu() + numar << endl;
                 l_ang_perm[i].set_salariu(l_ang_perm[i].getsalariu() + numar);
@@ -1217,12 +1267,12 @@ void firma::scadere_departament()
     cout << "Introduceti numele departamentului\n";
     string nume;
     cin >> nume;
-    int ID;
+    int IDdep;
     for (int i = 0; i < nr_departamente; i++)
     {
         if (nume == departamente[i].getname())
         {
-            ID = departamente[i].ID;
+            IDdep = departamente[i].ID;
         }
     }
     cout << "Introduceti cu cat vreti sa micsorati salariul(adaugati % daca doriti ca schimbarea sa fie procentuala sau * daca vreti sa fie o suma fixa)\n";
@@ -1234,7 +1284,7 @@ void firma::scadere_departament()
         float procent = 1 - float(numar) / 100;
         for (int i = 0; i < nr_angajati_p; i++)
         {
-            if (l_ang_perm[i].getdep() == ID)
+            if (l_ang_perm[i].getdep() == IDdep)
             {
                 cout << "salariu vechi: " << l_ang_perm[i].getsalariu() << " salariu nou: " << l_ang_perm[i].getsalariu() * procent << endl;
                 l_ang_perm[i].set_salariu(l_ang_perm[i].getsalariu() * procent);
@@ -1245,7 +1295,7 @@ void firma::scadere_departament()
     {
         for (int i = 0; i < nr_angajati_p; i++)
         {
-            if (l_ang_perm[i].getdep() == ID)
+            if (l_ang_perm[i].getdep() == IDdep)
             {
                 cout << "salariu vechi: " << l_ang_perm[i].getsalariu() << " salariu nou: " << l_ang_perm[i].getsalariu() - numar << endl;
                 l_ang_perm[i].set_salariu(l_ang_perm[i].getsalariu() - numar);
@@ -1292,7 +1342,7 @@ void firma::rescrie_fisier()
         iterator_task* it = creeaza_iter(&departamente[i]);
         for(it->element_curent(); !it->gol(); it->urmatorul())
         {
-            fout << it->eticheta_curenta() << " " << it->deadline_curent() << " " << departamente[i].get_ID() << endl;
+            fout << it->eticheta_curenta() << " " << it->deadline_curent() << " " << departamente[i].get_ID() <<  " 0" <<endl;
         }
     }
 }
@@ -1304,14 +1354,13 @@ void firma::change_id()
     if(cod == 1)
     {
         schimba_id(lista_angajati);
+        id_checker(lista_angajati);
     }
     else
     {
         schimba_id(divizii);
+        id_checker(divizii);
     }
-    id_checker(lista_angajati);
-    id_checker(divizii);
-
 }
 void firma::snapshot()
 {
@@ -1489,6 +1538,7 @@ int main()
                                     if (keyword == "COMMIT")
                                     {
                                         f1->rescrie_fisier();
+                                        break;
                                     }
                                     else
                                     {
@@ -1516,7 +1566,38 @@ int main()
                                                     }
                                                     else
                                                     {
-                                                        cout << "KEYWORD INVALID INTRODUS\n";
+                                                        if(keyword == "SEARCH")
+                                                        {
+                                                            cout<< "Doriti sa cautati un ID(1) sau un nume(2)?\n";
+                                                            int cod;
+                                                            cin >> cod;
+                                                            cout << "Introduceti termenul pe care vreti sa il cautati (Daca este un nume separati prenumele si numele de familie prin underscore)\n";
+                                                            if(cod == 1)
+                                                            {
+                                                                int id;
+                                                                cin >> id;
+                                                                cautare<int> c = cautare<int>(id);
+                                                                c.cauta();
+                                                            }
+                                                            else
+                                                            {
+                                                                string nume;
+                                                                cin >> nume;
+                                                                for(int i = 0; i < nume.size(); i++)
+                                                                {
+                                                                    if(nume[i] == '_')
+                                                                    {
+                                                                        nume[i] = ' ';
+                                                                    }
+                                                                }
+                                                                cautare<string> c = cautare<string>(nume);
+                                                                c.cauta();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            break;
+                                                        }
                                                     }
                                                 }
                                             }
