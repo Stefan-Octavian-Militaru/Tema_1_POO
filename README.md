@@ -10,5 +10,9 @@ Programul poate fi rulat din terminalul oricărui IDE de C++ și dispune de dive
 7. COMMIT - salvează schimbările făcute in baza de date într-un alt fișier (output.txt)
 8. STOP - oprește execuția programului
 9. CHANGEID - îi oferă posibilitatea administratorului să schimbe ID-ul oricărui angajat la alegere (dacă ID-ul este deja folosit de un alt angajat acest lucru nu va mai fi posibil iar toate ID-urile vor fi resetate de către program).
+10. SNAPSHOT - salveaza starea actuala a angajatilor permanenti (salariul, departamentul de care apartin, etc.).
+11. UNDO - readuce un angajat la starea din cel mai recent snapshot.
+12. UNDOALL - undo pentru toti angajatiii permanenti din firma.
+13. SEARCH - returneaza numele si id-ul tuturor angajatilor sau departamentelor care au un anumit nume sau id.
 
 Mai multe informații despre funcționalitate sunt transmise user-ului prin terminal după ce acesta tastează keyword-ul și apasă enter. Parametrii funcțiilor vor fi deasemenea ceruți de către program după ce user-ul inserează keyword-ul (atenție! programul este case sensitive deci trebuie scrise cu caps lock ca în lista de exemple). 
