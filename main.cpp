@@ -430,7 +430,7 @@ class firma
 {
     static firma* instanta;
     string nume;
-    firma(string nume) : nume(nume) {}\
+    firma(string nume) : nume(nume) {}
     firma(const firma &f)
     {
         nume = f.nume;
